@@ -5,6 +5,8 @@ import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
+var url;
+
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
@@ -12,7 +14,8 @@ export default new Vuex.Store({
     inCart: [],
     authenticationEnabled: "authentication-enabled-yes", // use "authentication-enabled-yes" to turn it on
     endpoints: {
-      login: "http://localhost:3000/login" // example: "http://localhost:3000/login"
+      login: "http://localhost:3000/login",
+      products: "http://localhost:8080/products"
     },
     user: {
       isAuthenticated: false,
@@ -58,6 +61,12 @@ export default new Vuex.Store({
       state.user.email =payload.email;
       state.user.idToken =payload.idToken;
     },
+    setUrls(state) {
+      state.endpoints.login = process.env.VUE_APP_AUTH_URL;
+      state.endpoints.products = process.env.VUE_APP_PRODUCTS_URL;
+      url = state.endpoints.products;
+      console.log(process.env);
+    },
     ADD_MESSAGE(state, {message, messageClass}) {
       state.messageGroup = {
         messageClass,
@@ -89,7 +98,7 @@ export default new Vuex.Store({
     },
     removeFromCart(context, index) { context.commit('REMOVE_FROM_CART', index) },
     getForSaleProducts({ commit }) {
-        axios.get('http://localhost:8080/products')
+        axios.get(url)
           .then((response) => {
             commit('SET_FORSALE', response.data);
             console.log(response.data)

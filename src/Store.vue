@@ -42,7 +42,7 @@ export default {
     inCart() { return this.$store.getters.inCart; },
   },
   mounted() {
-    this.$store.dispatch("getForSaleProducts")
+    
   },
   components: {
     Item,

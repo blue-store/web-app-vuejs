@@ -35,8 +35,9 @@
     methods: {
       
     },
-    created() {
-      
+    mounted() {
+      this.$store.commit("setUrls");
+      this.$store.dispatch("getForSaleProducts");
     }
   }
 </script>
